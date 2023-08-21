@@ -20,13 +20,27 @@ const app = express();
 app.use(express.json()); //add JSON body parser to each following route handler
 app.use(cors()); //add CORS support to each following route handler
 
-app.get("/hello", async (req, res) => {
-    res.json({ msg: "Hello! There's nothing interesting for GET /" });
-});
-
 app.get("/reset/database", async (req, res) => {
+    console.log("reset requested");
     const refreshResponse = await refreshDataBase(client);
     res.json(refreshResponse);
+});
+
+app.get<string>("/plain-query/:query", async (req, res) => {
+    const response = await client.query(req.params.query);
+    res.json(response.rows);
+});
+
+app.get("/health-check", async (req, res) => {
+    try {
+        //For this to be successful, must connect to db
+        await client.query("select now()");
+        res.status(200).send("system ok");
+    } catch (error) {
+        //Recover from error rather than letting system halt
+        console.error(error);
+        res.status(500).send("An error occurred. Check server logs.");
+    }
 });
 
 connectToDBAndStartListening();
