@@ -36,11 +36,5 @@ export async function refreshDataBase(client: Client) {
         .query<DbPurchase>(purchasesQuery)
         .then((queryResult) => queryResult.rows);
 
-    return [
-        resetResponse,
-        usersResponse,
-        itemsResponse,
-        accountsResponse,
-        purchasesResponse,
-    ];
+    return [usersResponse, itemsResponse, accountsResponse, purchasesResponse];
 }

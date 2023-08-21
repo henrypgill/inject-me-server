@@ -32,10 +32,10 @@ export function getResetQuery() {
         user_id INT REFERENCES users(user_id),
         item_id INT REFERENCES items(item_id)
     );
-
-    SELECT table_name 
-    FROM information_schema.tables 
-    WHERE table_schema = 'public';`;
+    `;
+    // SELECT table_name
+    // FROM information_schema.tables
+    // WHERE table_schema = 'public';`;
 
     return retString;
     // return `INSERT INTO users (first_name, last_name, password) VALUES ('james', 'dean', 'bubblingBrook') RETURNING *;`
