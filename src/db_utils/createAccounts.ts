@@ -1,10 +1,4 @@
-import { DbUser } from "./createUsers";
-
-export interface DbAccount {
-    account_id: number;
-    user_id: number; //typeof DbUser.user_id
-    user_money: number;
-}
+import { DbAccount, DbUser } from "./DbTypes";
 
 export function getInsertAccountsQuery(users: DbUser[]) {
     const createDbAccount = (user: DbUser): DbAccount => {

@@ -1,9 +1,4 @@
-export interface DbItem {
-    item_id: number;
-    name: string;
-    price: number;
-    quantity: number;
-}
+import { DbItem } from "./DbTypes";
 
 export function getItems() {
     const itemNames = [
@@ -66,9 +61,9 @@ export function getItems() {
 
         return {
             item_id: -1,
-            name: itemName,
-            price: randomPrice,
-            quantity: randomQuantity,
+            item_name: itemName,
+            item_price: randomPrice,
+            item_quantity: randomQuantity,
         };
     });
 
@@ -78,7 +73,10 @@ export function getItems() {
 export function getInsertItemsQuery() {
     const items = getItems();
     const itemValuesString = items
-        .map((item) => `('${item.name}', ${item.price}, ${item.quantity})`)
+        .map(
+            (item) =>
+                `('${item.item_name}', ${item.item_price}, ${item.item_quantity})`
+        )
         .join(",\n ");
     const insertDataString = `INSERT INTO items\n (item_name, item_price, item_quantity) VALUES ${itemValuesString}\nRETURNING *;`;
 

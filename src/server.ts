@@ -26,10 +26,74 @@ app.get("/reset/database", async (req, res) => {
     res.json(refreshResponse);
 });
 
-app.get<string>("/plain-query/:query", async (req, res) => {
-    const response = await client.query(req.params.query);
+app.get<string>("/free-query/:query", async (req, res) => {
+    console.log("received1");
+    try {
+        const query = req.params.query;
+        const response = await client.query(query);
+        res.json({ query: query, data: response.rows });
+    } catch (error) {
+        //Recover from error rather than letting system halt
+        console.error(error);
+        res.status(200).json("no items found matching that name");
+    }
+});
+
+app.get<string>("/interpolated-query/:query", async (req, res) => {
+    try {
+        const query = `SELECT (item_name, item_price) FROM items WHERE LOWER(item_name) LIKE LOWER('%${req.params.query}%')`;
+        console.log(query);
+        const response = await client.query(query);
+        res.json({ query: query, data: response.rows });
+    } catch (error) {
+        //Recover from error rather than letting system halt
+        console.error(error);
+        res.status(200).json("no items found matching that name");
+    }
+});
+
+app.get<string>("/restricted-query/:query", async (req, res) => {
+    try {
+        const query =
+            "SELECT item_name, item_price FROM items WHERE LOWER(item_name) LIKE LOWER($1)";
+        const response = await client.query(query, [`%${req.params.query}%`]);
+        res.json({ query: query, data: response.rows });
+    } catch (error) {
+        //Recover from error rather than letting system halt
+        console.error(error);
+        res.status(200).json("no items found matching that name");
+    }
+});
+
+app.get<string>("/all-data/:table", async (req, res) => {
+    const query = `SELECT * FROM ${req.params.table};`;
+    const response = await client.query(query);
     res.json(response.rows);
 });
+
+// app.get<string>("/all-data/users", async (req, res) => {
+//     const query = "SELECT * FROM $;"
+//     const response = await client.query(query);
+//     res.json(response.rows);
+// });
+
+// app.get<string>("/all-data/items", async (req, res) => {
+//     const query = "SELECT * FROM $;"
+//     const response = await client.query(query);
+//     res.json(response.rows);
+// });
+
+// app.get<string>("/all-data/accounts", async (req, res) => {
+//     const query = "SELECT * FROM $;"
+//     const response = await client.query(query);
+//     res.json(response.rows);
+// });
+
+// app.get<string>("/all-data/purchases", async (req, res) => {
+//     const query = "SELECT * FROM $;"
+//     const response = await client.query(query);
+//     res.json(response.rows);
+// });
 
 app.get("/health-check", async (req, res) => {
     try {
