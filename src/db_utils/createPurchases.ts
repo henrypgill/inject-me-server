@@ -1,12 +1,4 @@
-import { DbItem, getItems } from "./createItems";
-import { DbUser, getUsers } from "./createUsers";
-
-export interface DbPurchase {
-    purchase_id: number;
-    purchase_quantity: number;
-    item_id: number;
-    user_id: number;
-}
+import { DbItem, DbPurchase, DbUser } from "./DbTypes";
 
 export function getInsertPurchasesQuery(users: DbUser[], items: DbItem[]) {
     const purchases: DbPurchase[] = [];

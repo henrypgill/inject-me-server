@@ -1,9 +1,4 @@
-export interface DbUser {
-    user_id: number;
-    first_name: string;
-    last_name: string;
-    password: string;
-}
+import { DbUser } from "./DbTypes";
 
 export function getUsers() {
     const firstNames = [

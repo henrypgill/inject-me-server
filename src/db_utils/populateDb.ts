@@ -1,8 +1,9 @@
 // import { createDbAccounts } from "./createAccounts";
-import { DbAccount, getInsertAccountsQuery } from "./createAccounts";
-import { DbItem, getInsertItemsQuery } from "./createItems";
-import { DbPurchase, getInsertPurchasesQuery } from "./createPurchases";
-import { DbUser, getInsertUsersQuery } from "./createUsers";
+import { DbAccount, DbItem, DbPurchase, DbUser } from "./DbTypes";
+import { getInsertAccountsQuery } from "./createAccounts";
+import { getInsertItemsQuery } from "./createItems";
+import { getInsertPurchasesQuery } from "./createPurchases";
+import { getInsertUsersQuery } from "./createUsers";
 import { getResetQuery } from "./query-resetDb";
 import { Client } from "pg";
 
